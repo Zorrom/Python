@@ -1,5 +1,5 @@
 '''
-This fetches covid data for last 3 days on a particular country
+This code fetches Covid data for last 3 days of a particular country
 '''
 from itertools import islice
 from bs4 import BeautifulSoup
