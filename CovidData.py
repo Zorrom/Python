@@ -58,9 +58,14 @@ class CovidDataCollector:
             print("All data are available")
         return updated_list
 
+    def print_covid_data(self, finaldata):
+        dates = ["Today", "Yesterday", "2 days ago"]
+        print(f'Below are the covid details of {self.country} for the past 3 days')
+        for data, date in zip(finaldata, dates):
+            print(f'Covid cases as of {date} is {data}')
+
 
 outputFile = 'data.txt'
-countryData = 'countrydata.txt'
 country_name = input("Please provide the country name: ")
 covid = CovidDataCollector(country_name)
 mydata = covid.web_scraper()
@@ -68,4 +73,4 @@ covid.store_data(mydata)
 active_cases = covid.covid_count()
 string_list = covid.int_to_str(active_cases)
 final_list = covid.cases_count_per_country(string_list)
-print(final_list)
+covid.print_covid_data(final_list)
