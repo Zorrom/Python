@@ -4,6 +4,21 @@ This code fetches Covid data for last 3 days of a particular country
 from itertools import islice
 from bs4 import BeautifulSoup
 from urllib.request import Request, urlopen
+from ExcelAndDict import countries
+
+
+class CountrySelection:
+    def country_option(self):
+        for key, value in countries.countryvalues.items():
+            print(key + " " + ":" + " " + value)
+        user_selected_country = input("Please select your country: ")
+        print("")
+        try:
+            return countries.countryvalues[user_selected_country]
+        except KeyError:
+            print("Sorry that wasn't a valid option, please select a value "
+                  "only from the available options")
+            exit(1)
 
 
 class CovidDataCollector:
@@ -65,12 +80,17 @@ class CovidDataCollector:
             print(f'Covid cases as of {date} is {data}')
 
 
+def execute():
+    country_class = CountrySelection()
+    country_fetch = country_class.country_option()
+    covid = CovidDataCollector(country_fetch)
+    mydata = covid.web_scraper()
+    covid.store_data(mydata)
+    active_cases = covid.covid_count()
+    string_list = covid.int_to_str(active_cases)
+    final_list = covid.cases_count_per_country(string_list)
+    covid.print_covid_data(final_list)
+
+
 outputFile = 'data.txt'
-country_name = input("Please provide the country name: ")
-covid = CovidDataCollector(country_name)
-mydata = covid.web_scraper()
-covid.store_data(mydata)
-active_cases = covid.covid_count()
-string_list = covid.int_to_str(active_cases)
-final_list = covid.cases_count_per_country(string_list)
-covid.print_covid_data(final_list)
+execute()
